@@ -1,0 +1,17 @@
+{
+  "template": "sf_create_warehouse_resource_monitor.sql.j2",
+  "vars": {
+    "var_env_list": ["None"],
+    "var_wh": "COMPUTE_WH",
+    "var_rm": "RM_COMPUTE_WH",
+    "var_credit_quota": "2",
+    "var_frequency": "DAILY",
+    "var_triggers": [
+      { "TRIGGER_TYPE": "NOTIFY", "TRIGGER_PERCENTAGE": "5" },
+      { "TRIGGER_TYPE": "NOTIFY", "TRIGGER_PERCENTAGE": "10" },
+      { "TRIGGER_TYPE": "NOTIFY", "TRIGGER_PERCENTAGE": "10" },
+      { "TRIGGER_TYPE": "SUSPEND", "TRIGGER_PERCENTAGE": "90" },
+      { "TRIGGER_TYPE": "SUSPEND_IMMEDIATE", "TRIGGER_PERCENTAGE": "100" },
+    ]
+  }
+}

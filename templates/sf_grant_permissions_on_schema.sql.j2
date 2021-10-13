@@ -1,0 +1,61 @@
+/**
+ * Derived from template: {{ template }}
+ *
+ * This script solely creates schemas for data that is classified as being non-secure
+ *
+ * Jinja variables to set:
+ **/
+
+{% for var_env in var_env_list %}
+/**
+ * ENVIRONMENT: {{ var_env }}
+ */
+SET var_rl_sec               = 'SECURITYADMIN';
+SET var_rl_sys               = 'SYSADMIN';
+SET var_rl_adm               = '{{ var_rl_adm  | resolve(var_env=var_env) }}';
+SET var_db                   = '{{ var_db      | resolve(var_env=var_env) }}';
+SET var_sch                  = '{{ var_sch     | resolve(var_env=var_env) }}';
+SET var_rl_curr              = '{{ var_rl_curr | resolve(var_env=var_env)}}';
+
+/**
+* ARRANGE
+**/
+-- Made available in the Premium version
+
+/**
+ * ACT
+ *
+ * Use the following query to see what future grants apply to this schema
+ * SHOW FUTURE GRANTS IN SCHEMA IDENTIFIER('{{ var_db | resolve(var_env=var_env) }}.{{ var_sch | resolve(var_env=var_env) }}');
+ */
+USE    ROLE                     IDENTIFIER($var_rl_adm);
+  {# WIP: DRYRUN to dertmine outline_width_max -#}
+  {% set outline_widths = [] -%}
+  {% for var_grant in var_grants %}
+  {%- if 'GRANT' in var_grant -%}
+  {%- set grant_permission = var_grant['GRANT'] -%}
+  {% set outline_width_curr = grant_permission | length -%}
+  {{ (outline_widths.append(outline_width_curr)) or '' -}}
+  {%- endif %}
+  {%- endfor %}
+  {%- set outline_width_max = outline_widths | max -%}
+  {# PRINT -#}
+  {% set grant_schema = ['SCHEMA IDENTIFIER(\'', (var_db | resolve(var_env=var_env )), '.', (var_sch | resolve(var_env=var_env )), '\')'] | join('') -%}
+  GRANT {{ "%-39s" | format("USAGE")          }} ON {{ "%-45s" | format(grant_schema)   }} TO   ROLE IDENTIFIER($var_rl_curr);
+  {% for var_grant in var_grants %}
+  {%- if 'GRANT' in var_grant -%}
+  {%- set grant_permission = var_grant['GRANT'] -%}
+  {%- set grant_subject = var_grant['ON'] -%}
+  GRANT {{ "%-10s" | format(grant_permission) }} ON {{ "%-25s" | format(grant_subject) }} IN {{ "%-45s" | format(grant_schema) }} TO   ROLE IDENTIFIER($var_rl_curr){{' REVOKE CURRENT GRANTS' if grant_permission == 'OWNERSHIP' and 'FUTURE' not in grant_subject.split() }};
+  {%- elif 'REVOKE' in var_grant -%}
+  {%- set grant_permission = var_grant['REVOKE'] -%}
+  {%- set grant_subject = var_grant['ON'] -%}
+  REVOKE {{ "%-9s" | format(grant_permission) }} ON {{ "%-25s" | format(grant_subject) }} IN {{ "%-45s" | format(grant_schema) }} FROM ROLE IDENTIFIER($var_rl_curr);
+  {%- endif %}
+  {% endfor %}
+
+/**
+ * VALIDATION
+ */
+-- Made available in the Premium version
+{%- endfor %}

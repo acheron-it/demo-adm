@@ -1,0 +1,46 @@
+/**
+ * Derived from template: {{ template }}
+ *
+ * This script solely creates a default-sized warehouse per environment
+ *
+ * Jinja variables to set:
+ **/
+SET var_rl_god             = 'ACCOUNTADMIN';
+SET var_rl_sys             = 'SYSADMIN';
+SET var_wh                 = '{{ var_wh | resolve(var_env=var_env) }}';
+SET var_rm                 = '{{ var_rm | resolve(var_env=var_env) }}';
+SET var_db_util            = 'UTIL_DB';
+SET var_sch                = 'PUBLIC';
+SET var_wh_global          = 'COMPUTE_WH';
+
+/**
+ * ARRANGE
+ **/
+-- Made available in the Premium version
+
+/**
+ * ACT
+ */
+USE    ROLE                     IDENTIFIER($var_rl_god);
+  CREATE OR REPLACE RESOURCE MONITOR IDENTIFIER($var_rm)
+  WITH CREDIT_QUOTA = {{ var_credit_quota }},
+  FREQUENCY = '{{ var_frequency }}',
+  START_TIMESTAMP = 'IMMEDIATELY',
+  END_TIMESTAMP = null
+    {% if var_triggers -%}
+    TRIGGERS
+    {% for trigger in var_triggers -%}
+    {%- set triggery_type = trigger['TRIGGER_TYPE'] -%}
+    {%- set triggery_perc = trigger['TRIGGER_PERCENTAGE'] -%}
+    ON {{ triggery_perc }} PERCENT DO {{ triggery_type }}
+    {% endfor -%}
+    {%- endif %}
+  ;
+  ALTER WAREHOUSE IDENTIFIER($var_wh) SET RESOURCE_MONITOR = $var_rm;
+
+/**
+ * ASSERT
+ * Only the ACCOUNTADMIN has by default access to see this resource monitor
+ */
+-- Made available in the Premium version
+

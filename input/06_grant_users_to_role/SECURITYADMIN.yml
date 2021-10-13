@@ -1,0 +1,17 @@
+{
+  "template": "sf_grant_role_to_user.sql.j2",
+  "naming_conventions": {
+    "functional_user_convention": "SF_{{var_app}}"
+  },
+  "vars": {
+    "var_rl": "SECURITYADMIN",
+    "var_users": [
+      {
+        "functional_user_convention": {
+          "var_app": "ACHERON_AUTO_EXECUTER",
+        },
+        "expected": "SF_ACHERON_AUTO_EXECUTER"
+      }
+    ]
+  }
+}

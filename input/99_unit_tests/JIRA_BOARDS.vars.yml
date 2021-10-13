@@ -1,0 +1,26 @@
+{
+  "template": "sf_unit_test.sql.j2",
+  "naming_conventions": {
+    "role_convention": "RL_{{ var_context }}_{{ var_env }}_{{ var_rl_type }}",
+    "warehouse_convention": "WH_{{var_context}}_{{var_env}}_{{var_wh_usecase}}",
+    "database_convention": "DB_{{var_context}}_{{var_env}}",
+    "schema_convention": "{{var_context}}_{{var_sch_name}}"
+  },
+  "vars":
+  {
+    "var_env": "T",
+    "var_meta_tabel": "JIRA_BOARDS",
+    "var_env_list":   ["T"],
+    "var_context":    "DWH",
+    "var_rl":         { "role_convention":      {"var_rl_type": "ELT" }},
+    "var_wh":         { "warehouse_convention": {"var_wh_usecase": "ELT" }},
+    "var_db":         { "database_convention":  {}},
+    "var_sch_meta":   { "schema_convention":    { "var_sch_name": "0_META" }},
+    "var_sch_raw":    { "schema_convention":    { "var_sch_name": "1_RAW" }},
+    "var_sch_dd":     { "schema_convention":    { "var_sch_name": "2_DD" }},
+    "var_sch_da":     { "schema_convention":    { "var_sch_name": "3_DA" }},
+    "var_tab_max": "META_TABLE_FOR_MAX_VALUES",
+    "var_assert_db": "UTIL_DB",
+    "var_assert_sch": "PUBLIC"
+  }
+}

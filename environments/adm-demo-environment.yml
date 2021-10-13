@@ -1,0 +1,11 @@
+{
+  "name": "adm-demo-environment",
+  "description": "acheron snowflake environment OS variable example ",
+  "connector": "snowflake",
+  "security": {
+    "connector": "variables",
+    "endpoint_variable": "ACHERON_SNOWSQL_ENDPOINT",
+    "username_variable": "ACHERON_SNOWSQL_USER",
+    "password_variable": "ACHERON_SNOWSQL_PASS"
+  }
+}

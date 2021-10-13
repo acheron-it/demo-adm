@@ -1,0 +1,68 @@
+/**
+ * Derived from template: {{ template }}
+ *
+ * This script solely creates functional users
+ *
+ * Jinja variables to set:
+ *  - var_env_list (OPTIONAL): ARRAY e.g. ["T", "A", "P"]
+ *  - var_preferred_db (OPTIONAL): STRING e.g. "DB_DWH_T"
+ *  - var_sf_user_name: STRING e.g. "SF_MATILLION_T"
+ *  - var_sf_user_email: STRING e.g. "info@acheron.cloud"
+ *  - var_public_key (OPTIONAL): STRING e.g. "public key", used for authentication
+ **/
+{% macro create_functional_user() -%}
+/**
+ * ARRANGE
+ **/
+-- Made available in the Premium edition
+
+/**
+ * ACT - Create user
+ **/
+BEGIN;
+  -- DEFAULT_WAREHOUSE is set where the default role is initiated
+  -- DEFAULT_ROLE is set where the default role is initiated
+  USE ROLE                  IDENTIFIER($var_rl_sec);
+  CREATE USER IF NOT EXISTS IDENTIFIER($var_sf_user_name)
+    PASSWORD             = '****************'
+    MUST_CHANGE_PASSWORD = FALSE
+    DEFAULT_ROLE         = 'PUBLIC'
+    DEFAULT_WAREHOUSE    = NULL
+  ;
+  ALTER USER IDENTIFIER($var_sf_user_name) SET COMMENT              = $var_sf_user_comment;
+  ALTER USER IDENTIFIER($var_sf_user_name) SET LOGIN_NAME           = $var_sf_user_name;
+  ALTER USER IDENTIFIER($var_sf_user_name) SET DISPLAY_NAME         = $var_sf_user_name;
+  ALTER USER IDENTIFIER($var_sf_user_name) SET FIRST_NAME           = $var_sf_user_name;
+  ALTER USER IDENTIFIER($var_sf_user_name) SET DEFAULT_NAMESPACE    = $var_preferred_db;
+  ALTER USER IDENTIFIER($var_sf_user_name) SET RSA_PUBLIC_KEY       = $var_public_key;
+  ALTER USER IDENTIFIER($var_sf_user_name) SET EMAIL                = $var_sf_user_email;
+-- ALTER USER IDENTIFIER($var_sf_user_name) RESET PASSWORD; <-- place password in the Secret Manager
+COMMIT;
+
+/**
+ * ASSERT
+ **/
+-- Made available in the Premium edition
+{%- endmacro -%}
+{#- The macro will be used twice. One time with environments, one time without -#}
+SET var_rl_sec          = 'SECURITYADMIN';
+SET var_sf_user_email   = '{{ var_sf_user_email }}';
+SET var_preferred_db    = '{{ var_preferred_db if var_preferred_db else '' }}';
+-- TODO: Assignment to 'VAR_PUBLIC_KEY' not done because value exceeds size limit for variables. Its size is 392; the limit is 256 (internal storage size in bytes).
+SET var_public_key      = '{{ var_public_key  if var_public_key else '' }}';
+{% if not var_env_list -%}
+SET var_rl_sec          = 'SECURITYADMIN';
+SET var_sf_user_name    = '{{ var_sf_user_name | resolve() }}';
+SET var_sf_user_comment = 'Snowflake-user '||$var_sf_user_name;
+{{ create_functional_user() }}
+{% endif %}
+{% for var_env in var_env_list -%}
+/**
+ * ENVIRONMENT: {{ var_env }}
+ */
+UNSET (var_env, var_rl_sec, var_sf_user_name, var_sf_user_email, var_sf_user_comment);
+SET var_env             = '{{ var_env }}';
+SET var_sf_user_name    = '{{ var_sf_user_name | resolve() }}';
+SET var_sf_user_comment = 'Snowflake-user '||$var_sf_user_name;
+{{ create_functional_user() }}
+{%- endfor  %}

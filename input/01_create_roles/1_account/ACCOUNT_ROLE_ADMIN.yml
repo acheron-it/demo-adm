@@ -1,0 +1,6 @@
+{
+  "template": "sf_create_role_only.sql.j2",
+  "vars": {
+    "var_rl": "ACCOUNT_SYS_ADMIN"
+  }
+}

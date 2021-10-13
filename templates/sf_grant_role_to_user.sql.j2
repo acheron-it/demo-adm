@@ -1,0 +1,25 @@
+/**
+ * Derived from template: {{ template }}
+ *
+ * This script solely assigns data scientists, analists and PBI-users to a role that has schema access.
+ *
+ * Jinja variables to set:
+ *  - var_rl: STRING e.g. SECURITYADMIN
+ *  - var_users: ARRAY e.g. ["userA", "userB"]
+ **/
+UNSET (var_rl_sec, var_rl_sec, var_rl);
+SET var_rl_sec          = 'SECURITYADMIN';
+SET var_rl              = '{{ var_rl | resolve() }}';
+
+/**
+ * ARRANGE
+ **/
+-- Made available in the Premium version
+
+/**
+ * ACT - Grant user to role
+ **/
+USE ROLE IDENTIFIER($var_rl_sec);
+  {% for var_user in var_users -%}
+  GRANT ROLE IDENTIFIER($var_rl) TO USER {{ var_user }};
+  {% endfor %}

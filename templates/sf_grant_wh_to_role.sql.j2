@@ -1,0 +1,37 @@
+/**
+ * Derived from template: {{ template }}
+ *
+ * This script solely creates a role and adds users
+ *
+ * Jinja variables to set:
+ *  - var_env: STRING e.g. "T"
+ *  - var_context: STRING e.g. "DWH" so, without the DB_ prefix
+ *  - var_wh_usecase: STRING e.g. "ETL"
+ *  - var_rl_type: STRING e.g. ELT
+ **/
+
+{% for var_env in var_env_list %}
+UNSET (var_rl_sec, var_rl_sys, var_rl, var_wh, var_sf_user);
+SET var_env             = '{{ var_env }}';
+SET var_rl_sec          = 'SECURITYADMIN';
+SET var_rl_sys          = 'SYSADMIN';
+SET var_rl              = '{{ var_rl | resolve(var_env=var_env) | upper() }}';
+SET var_wh              = '{{ var_wh | resolve(var_env=var_env) | upper() }}';
+
+/**
+ * ARRANGE
+ **/
+-- Made available in the Premium version
+
+/**
+ * ACT - Grant usage on warehouse to role
+ **/
+USE    ROLE               IDENTIFIER($var_rl_sys);
+{% if var_wh_permissions is iterable and (var_wh_permissions is not string and var_wh_permissions is not mapping) %}
+GRANT {{ var_wh_permissions|join(', ') }} ON WAREHOUSE  IDENTIFIER($var_wh) TO ROLE IDENTIFIER($var_rl);
+{% endif %}
+/**
+ * ASSERT
+ **/
+-- Made available in the Premium version
+{% endfor %}

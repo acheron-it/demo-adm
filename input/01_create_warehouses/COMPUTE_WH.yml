@@ -1,0 +1,8 @@
+{
+  "template": "sf_create_warehouse.sql.j2",
+  "vars": {
+    "var_env_list": ["None"],
+    "var_wh": "COMPUTE_WH",
+    "var_default_warehouse_size": "XSMALL"
+  }
+}

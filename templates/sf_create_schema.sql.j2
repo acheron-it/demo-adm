@@ -1,0 +1,40 @@
+/**
+ * Derived from template: {{ template }}
+ *
+ * This script solely creates schemas for data that is classified as being non-secure
+ *
+ * Jinja variables to set:
+ *  - var_env_list: ARRAY e.g. ["T", "A", "P"]
+ *  - var_context: STRING e.g. "DWH" (used in the Database Name)
+ *  - var_sch: STRING e.g. "generic" (schema to give access to)
+ *  - var_data_retention_days INTEGER e.g. "14"
+ **/
+
+{% for var_env in var_env_list %}
+/**
+ * ENVIRONMENT: {{ var_env }}
+ */
+SET var_rl_sec               = 'SECURITYADMIN';
+SET var_rl_sys               = 'SYSADMIN';
+SET var_rl_adm               = '{{ var_rl_adm | resolve(var_env=var_env) }}';
+SET var_db                   = '{{ var_db     | resolve(var_env=var_env) }}';
+SET var_sch                  = '{{ var_sch    | resolve(var_env=var_env) }}';
+SET var_data_retention_days  = '{{ var_data_retention_days }}';
+
+/**
+* ARRANGE
+**/
+-- Made available in the Premium edition
+
+/**
+ * ACT - Create schemas
+ */
+USE    ROLE                     IDENTIFIER($var_rl_adm);
+USE    DATABASE                 IDENTIFIER($var_db);
+CREATE SCHEMA IF NOT EXISTS     IDENTIFIER($var_sch){{ ' WITH MANAGED ACCESS' if var_enable_managed_access else '' }};
+
+/**
+ * ASSERT
+ */
+-- Made available in the Premium edition
+{%- endfor %}

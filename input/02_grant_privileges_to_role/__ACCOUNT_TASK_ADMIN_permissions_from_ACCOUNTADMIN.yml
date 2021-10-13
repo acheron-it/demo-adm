@@ -1,0 +1,10 @@
+{
+  "template": "sf_grant_permission.sql.j2",
+  "vars": {
+    "var_rl_granter": "ACCOUNTADMIN",
+    "var_permission_list": [
+      "EXECUTE TASK ON ACCOUNT",
+    ],
+    "var_rl_grantee": "ACCOUNT_TASK_ADMIN",
+  }
+}

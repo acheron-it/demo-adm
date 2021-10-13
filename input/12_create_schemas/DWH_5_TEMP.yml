@@ -1,0 +1,18 @@
+{
+  "template": "sf_create_schema.sql.j2",
+  "naming_conventions": {
+    "role_convention": "RL_{{ var_context }}_{{ var_env }}_{{ var_rl_type }}",
+    "database_convention": "DB_{{var_context}}_{{var_env}}",
+    "schema_convention": "{{var_context}}_{{var_sch_name}}"
+  },
+  "vars": {
+    "var_env_list": ["T"],
+    "var_context": "DWH",
+    "var_rl_adm": { "role_convention":      { "var_rl_type": "ADMIN"   } },
+    "var_db":     { "database_convention":  {}},
+    "var_sch":    { "schema_convention":    { "var_sch_name": "5_TEMP" }},
+    "var_sch_comment": "Contains data in its original format, with no transformations / data type conversions",
+    "var_enable_managed_access": "TRUE",
+    "var_data_retention_days": "14"
+  }
+}

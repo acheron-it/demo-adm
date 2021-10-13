@@ -1,0 +1,17 @@
+{
+  "template": "sf_create_func_user_for_application.sql.j2",
+  "naming_conventions": {
+    "functional_user_convention": "SF_{{var_app}}",
+    "database_convention": "DB_{{var_context}}_{{var_env}}"
+  },
+  "vars": {
+    "var_sf_user_name": {
+      "functional_user_convention": {
+        "var_app": "ACHERON_AUTO_EXECUTER"
+      }
+    },
+    "var_preferred_db": "UTIL_DB",
+    "var_sf_user_email": "info@acheron.cloud",
+    "var_public_key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAymfJioOxd0DwFgCwoxx80EmBvBbnx7cekoakZAiO1juKsdbkjDczXRfB5ddJEHXtKEwSnAgXaPBsLrwFOSxvMpsZE4bn2wCSY9OqVz17oLy+eVw6cWWVYcRKuq0Jo5mUh1C1bS3AoqmODhk3fA/cC/XR2AxKlQJbLoiJB9L/GdcAdCQvwdl/RaOVqTQStAHdTHqiJI+NFiq/9uBSkvTKNqgD8Gt9mhtU3xGARGJMFv1KP3xv2ubYAs/n5DkgsHcSUlExZRz+Nirn874IzDj2EMl/89GrDCrZQM72Zyp4htw+HmnoGmjR6Xv2PoKy5JUgPnWhxS59dQtllWQio8qC8wIDAQAB"
+  }
+}

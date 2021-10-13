@@ -1,0 +1,15 @@
+{
+  "template": "sf_create_named_user.sql.j2",
+  "vars": [
+    {
+      "var_user_name": "SNOWFLAKE_DEMO_USER1",
+      "var_display_name": "Snowflake demo user",
+      "var_user_email": "info@acheron.cloud"
+    },
+    {
+      "var_user_name": "SNOWFLAKE_DEMO_USER2",
+      "var_display_name": "Snowflake demo user",
+      "var_user_email": "info@acheron.cloud"
+    }
+  ]
+}

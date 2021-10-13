@@ -1,0 +1,14 @@
+{
+  "template": "sf_grant_wh_to_role.sql.j2",
+  "naming_conventions": {
+    "role_convention": "RL_{{ var_context }}_{{ var_env }}_{{ var_rl_type }}",
+    "warehouse_convention": "WH_{{ var_context }}_{{ var_env }}_{{ var_wh_usecase }}"
+  },
+  "vars": {
+    "var_env_list": ["T"],
+    "var_context": "DWH",
+    "var_rl": { "role_convention":      { "var_rl_type": "ADMIN" } },
+    "var_wh": { "warehouse_convention": { "var_wh_usecase": "ELT" } },
+    "var_wh_permissions": ["USAGE", "OPERATE"]
+  }
+}

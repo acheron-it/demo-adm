@@ -1,0 +1,11 @@
+{
+  "template": "sf_grant_permission.sql.j2",
+  "vars": {
+    "var_rl_granter": "SYSADMIN",
+    "var_permission_list": [
+      "CREATE DATABASE ON ACCOUNT",
+      "CREATE WAREHOUSE ON ACCOUNT",
+    ],
+    "var_rl_grantee": "ACCOUNT_SYS_ADMIN",
+  }
+}

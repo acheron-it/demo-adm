@@ -1,0 +1,10 @@
+{
+  "template": "sf_grant_role_to_user.sql.j2",
+  "vars": {
+    "var_rl": "ACCOUNT_SYS_ADMIN",
+    "var_users": [
+      "ADM_DEMO_USER",
+      "SF_ACHERON_DBT_USER"
+    ]
+  }
+}

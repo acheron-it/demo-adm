@@ -1,0 +1,35 @@
+/**
+ * Derived from template: {{ template }}
+ *
+ * This script solely creates database
+ *
+ * Creates a database, and give ADMIN user all the rights to it.
+ * Sysadmin is still the owner
+ *
+ * Jinja variables to set:
+ *  - var_env: ARRAY e.g. ["T", "A", "P"]
+ *  - var_db_context: STRING e.g. "DWH" OR "MASKING_POC" so, without the DB_ prefix
+ **/
+
+{% for var_env in var_env_list -%}
+SET var_rl_sys          = '{{ var_rl_sys if var_rl_sys else 'SYSADMIN' }}';
+SET var_db              = '{{ var_db     | resolve(var_env=var_env) }}';
+SET var_rl_adm          = '{{ var_rl_adm | resolve(var_env=var_env) }}';
+
+/**
+ * ARRANGE
+ **/
+-- Made available in the Premium version
+
+/**
+ * ACT - Create database
+ **/
+USE    ROLE                     IDENTIFIER($var_rl_sys);
+CREATE DATABASE IF NOT EXISTS   IDENTIFIER($var_db);
+GRANT ALL ON DATABASE           IDENTIFIER($var_db) TO ROLE IDENTIFIER($var_rl_adm);
+
+/**
+ * ASSERT
+ **/
+-- Made available in the Premium version
+{% endfor %}

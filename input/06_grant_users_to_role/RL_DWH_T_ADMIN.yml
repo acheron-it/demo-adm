@@ -1,0 +1,20 @@
+{
+  "template": "sf_grant_role_to_user.sql.j2",
+  "naming_conventions": {
+    "adm_username_convention": "ADM_{{username}}",
+    "role_convention_at_runtime": "RL_{{ var_context }}_{{ var_env }}_{{ var_rl_type }}",
+  },
+  "vars": {
+    "var_env": "T",
+    "var_context": "DWH",
+    "var_rl": {
+      "role_convention_at_runtime": {
+        "var_env": "T",
+        "var_rl_type": "ADMIN"
+      }
+    },
+    "var_users": [
+      "ADM_DEMO_USER"
+    ]
+  }
+}

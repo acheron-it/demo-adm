@@ -1,0 +1,36 @@
+/**
+ * Derived from template: {{ template }}
+ *
+ * This script solely creates schemas for data that is classified as being non-secure
+ *
+ * Jinja variables to set:
+ **/
+
+{% for var_env in var_env_list %}
+/**
+ * ENVIRONMENT: {{ var_env }}
+ */
+SET var_rl_sec               = 'SECURITYADMIN';
+SET var_rl_sys               = '{{ var_rl_sys if var_rl_sys else 'SYSADMIN' }}';
+SET var_db                   = '{{ var_db      | resolve(var_env=var_env) }}';
+SET var_rl_curr              = '{{ var_rl_curr | resolve(var_env=var_env)}}';
+
+/**
+* ARRANGE
+**/
+-- Made available in the Premium version
+
+/**
+ * ACT
+ *
+ * Use the following query to see what future grants apply to this schema
+ */
+USE    ROLE                     IDENTIFIER($var_rl_sys);
+  {% set grant_database = 'DATABASE IDENTIFIER($var_db)' -%}
+  GRANT {{ "%-39s" | format("USAGE")          }} ON {{ "%-45s" | format(grant_database) }} TO   ROLE IDENTIFIER($var_rl_curr);
+{%- endfor %}
+
+/**
+ * VALIDATION
+ */
+-- Made available in the Premium version

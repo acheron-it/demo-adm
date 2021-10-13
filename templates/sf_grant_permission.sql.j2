@@ -1,0 +1,8 @@
+
+/**
+ * ACT - Grant permission to role
+ */
+USE ROLE {{ var_rl_granter }};
+{% for var_permission in var_permission_list -%}
+GRANT {{ var_permission }} TO ROLE {{ var_rl_grantee }};
+{% endfor %}

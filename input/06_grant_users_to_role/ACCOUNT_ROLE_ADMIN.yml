@@ -1,0 +1,9 @@
+{
+  "template": "sf_grant_role_to_user.sql.j2",
+  "vars": {
+    "var_rl": "ACCOUNT_ROLE_ADMIN",
+    "var_users": [
+      "ADM_DEMO_USER"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "template": "sf_create_warehouse.sql.j2",
+  "naming_conventions": {
+    "warehouse_convention": "WH_{{var_context}}_{{var_env}}_{{var_wh_usecase}}"
+  },
+  "vars": {
+    "var_env_list": ["T", "A"],
+    "var_context": "DWH",
+    "var_wh": { "warehouse_convention": { "var_wh_usecase": "DEMO" } },
+    "var_default_warehouse_size": "XSMALL"
+  }
+}

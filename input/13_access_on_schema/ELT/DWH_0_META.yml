@@ -1,0 +1,36 @@
+{
+  "template": "sf_grant_permissions_on_schema.sql.j2",
+  "naming_conventions": {
+    "role_convention": "RL_{{ var_context }}_{{ var_env }}_{{ var_rl_type }}",
+    "warehouse_convention": "WH_{{var_context}}_{{var_env}}_{{var_wh_usecase}}",
+    "database_convention": "DB_{{var_context}}_{{var_env}}",
+    "schema_convention": "{{var_context}}_{{var_sch_name}}"
+  },
+  "vars": {
+    "var_env_list": ["T"],
+    "var_context": "DWH",
+    "var_rl_adm": { "role_convention":      { "var_rl_type": "ADMIN" } },
+    "var_rl_curr":{ "role_convention":      { "var_rl_type": "ELT" } },
+    "var_wh":     { "warehouse_convention": { "var_wh_usecase": "ELT" }},
+    "var_db":     { "database_convention":  {}},
+    "var_sch":    { "schema_convention":    { "var_sch_name": "0_META" }},
+    "var_grants": [
+      {"ON":    "ALL TABLES",             "GRANT":  "SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES"},
+      {"ON": "FUTURE TABLES",             "GRANT":  "SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES"},
+      {"ON":    "ALL EXTERNAL TABLES",    "GRANT":  "SELECT"},
+      {"ON": "FUTURE EXTERNAL TABLES",    "GRANT":  "SELECT"},
+      {"ON":    "ALL VIEWS",              "GRANT":  "SELECT,REFERENCES"},
+      {"ON": "FUTURE VIEWS",              "GRANT":  "SELECT,REFERENCES"},
+      {"ON":    "ALL MATERIALIZED VIEWS", "GRANT":  "SELECT"},
+      {"ON": "FUTURE MATERIALIZED VIEWS", "GRANT":  "SELECT"},
+      {"ON":    "ALL STREAMS",            "GRANT":  "SELECT"},
+      {"ON": "FUTURE STREAMS",            "GRANT":  "SELECT"},
+      {"ON":    "ALL SEQUENCES",          "GRANT":  "USAGE",},
+      {"ON": "FUTURE SEQUENCES",          "GRANT":  "USAGE",},
+      {"ON":    "ALL STAGES",             "GRANT":  "USAGE",},
+      {"ON": "FUTURE STAGES",             "GRANT":  "USAGE",},
+      {"ON":    "ALL FILE FORMATS",       "GRANT":  "USAGE",},
+      {"ON": "FUTURE FILE FORMATS",       "GRANT":  "USAGE",},
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "template": "sf_create_adm_user.sql.j2",
+  "naming_conventions": {
+    "adm_username_convention": "ADM_{{username}}"
+  },
+  "vars": [
+    {
+      "var_user_name": {
+        "adm_username_convention": {
+          "username": "DEMO_USER"
+        }
+      },
+      "var_user_email": "info@acheron.cloud",
+      "var_wh_default": "NULL"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "template": "sf_grant_permission.sql.j2",
+  "vars": {
+    "var_rl_granter": "USERADMIN",
+    "var_permission_list": [
+      "CREATE ROLE ON ACCOUNT"
+    ],
+    "var_rl_grantee": "ACCOUNT_ROLE_ADMIN",
+  }
+}

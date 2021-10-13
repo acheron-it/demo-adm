@@ -1,0 +1,14 @@
+{
+  "template": "sf_create_db.sql.j2",
+  "naming_conventions": {
+    "role_convention": "RL_{{ var_context }}_{{ var_env }}_{{ var_rl_type }}",
+    "database_convention": "DB_{{var_context}}_{{var_env}}"
+  },
+  "vars": {
+    "var_rl_sys": "ACCOUNT_SYS_ADMIN",
+    "var_env_list": ["T"],
+    "var_context": "DWH",
+    "var_rl_adm": { "role_convention":      { "var_rl_type": "ADMIN"   } },
+    "var_db":     { "database_convention":  {} }
+  }
+}

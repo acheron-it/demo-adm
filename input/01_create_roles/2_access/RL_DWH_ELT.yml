@@ -1,0 +1,12 @@
+{
+  "template": "sf_create_role_only.sql.j2",
+  "naming_conventions": {
+    "role_convention": "RL_{{ var_context }}_{{ var_env }}_{{ var_rl_type }}",
+  },
+  "vars": {
+    "var_env_list": ["T"],
+    "var_context": "DWH",
+    "var_rl":     { "role_convention":      { "var_rl_type": "ELT"   } },
+    "var_rl_par": { "role_convention":      { "var_rl_type": "ADMIN" } },
+  }
+}

@@ -1,0 +1,43 @@
+/**
+ * Derived from template: {{ template }}
+ *
+ * Creates only a role
+ *
+ * Jinja variables to set:
+ *  - var_rl: STRING e.g. ACCOUNT_ROLE_ADMIN
+ **/
+{% if var_env_list -%}
+{% for var_env in var_env_list %}
+SET var_rl_user         = 'USERADMIN';
+SET var_rl_new          = '{{ var_rl | resolve(var_env=var_env) }}';
+SET var_rl_par          = '{{ var_rl_par | resolve(var_env=var_env) if var_rl_par else 'SYSADMIN' }}';
+
+/**
+ * ARRANGE
+ */
+-- Made available in the Premium edition
+
+/**
+ * ACT - Create the role and assign it to the SYSADMIN user
+ */
+USE ROLE IDENTIFIER($var_rl_user);
+  CREATE ROLE IF NOT EXISTS IDENTIFIER($var_rl_new);
+  GRANT  ROLE               IDENTIFIER($var_rl_new) TO ROLE IDENTIFIER($var_rl_par);
+{% endfor %}
+{%- else -%}
+SET var_rl_user         = 'USERADMIN';
+SET var_rl_new          = '{{ var_rl | resolve() }}';
+SET var_rl_par          = '{{ var_rl_par | resolve() if var_rl_par else 'SYSADMIN' }}';
+
+/**
+ * ARRANGE
+ */
+-- Made available in the Premium edition
+
+/**
+ * ACT - Create the role and assign it to the SYSADMIN user
+ */
+USE ROLE IDENTIFIER($var_rl_user);
+  CREATE ROLE IF NOT EXISTS IDENTIFIER($var_rl_new);
+  GRANT  ROLE               IDENTIFIER($var_rl_new) TO ROLE IDENTIFIER($var_rl_par);
+{%- endif -%}

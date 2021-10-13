@@ -1,0 +1,11 @@
+{
+  "template": "sf_grant_permission.sql.j2",
+  "vars": {
+    "var_rl_granter": "ACCOUNTADMIN",
+    "var_permission_list": [
+      "MANAGE GRANTS ON ACCOUNT"
+    ],
+    "var_rl_grantee": "ACCOUNT_ROLE_ADMIN",
+  }
+}
+

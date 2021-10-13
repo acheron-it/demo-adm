@@ -1,0 +1,41 @@
+/**
+ * Derived from template: {{ template }}
+ *
+ * The default role will be set where the role is created
+ *
+ * Jinja variables to set:
+ *  - var_user_name: STRING e.g. "userA"
+ *  - var_display_name: STRING e.g. "User A"
+ *  - var_user_email: STRING e.g. "userA@acheron.cloud"
+ **/
+{% for var_user_name, var_display_name, var_user_email in j2_vars|sort %}
+UNSET (var_user_name, var_user_email);
+SET var_user_name       = '{{ var_user_name }}';
+SET var_display_name    = '{{ var_display_name }}';
+SET var_user_email      = '{{ var_user_email }}';
+SET var_rl_sec          = 'SECURITYADMIN';
+
+/**
+ * ARRANGE
+ */
+-- Made available in the Premium edition
+
+/**
+ * ACT - Create named user
+ **/
+USE ROLE IDENTIFIER($var_rl_sec);
+  CREATE USER IF NOT EXISTS IDENTIFIER($var_user_name)
+    PASSWORD = '****************'
+    MUST_CHANGE_PASSWORD = TRUE
+    DEFAULT_ROLE = 'PUBLIC'
+    DEFAULT_NAMESPACE = ''
+    EMAIL = $var_user_email
+    DISPLAY_NAME = $var_display_name
+  ;
+
+/**
+ * ASSERT
+ **/
+-- Made available in the Premium edition
+
+{%- endfor %}
