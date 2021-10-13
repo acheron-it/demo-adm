@@ -14,7 +14,7 @@ jobs:
           echo "Linting ..."
           python $(ls -d "/usr/local/lib/"python*/ | tail -1)/site-packages/opt/acheron/lint.py "$@"
   
-  templater:
+  templater_dryrun:
     needs: linter
     runs-on: ubuntu-latest
     container: 
@@ -31,8 +31,28 @@ jobs:
         run: |
           echo "Templating ...."
           eval $(ssh-agent -s)
-          python $(ls -d "/usr/local/lib/"python*/ | tail -1)/site-packages/opt/acheron/template.py "$@" adm-demo-environment
+          python $(ls -d "/usr/local/lib/"python*/ | tail -1)/site-packages/opt/acheron/template.py "$@" adm-demo-environment --print-generated-contents --delegate-repo-push
         
+  templater:
+    needs: templater_dryrun
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    container: 
+      image: acheronbv/acheron-database-manager:latest-1.3.35
+    env:
+      ACH_DEPLOY_USERNAME: ${{ secrets.ACH_DEPLOY_USERNAME }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      CI_REPOSITORY_URL: "git@github.com:rdaalman-ach/acheron-adm-demo-klant.git"
+      ACHERON_GIT_PORT: 22
+      GIT_COMMIT_COMMITTER_EMAIL: "rob@acheron.cloud"
+    steps:
+      - name: Run templater step
+        shell: bash
+        run: |
+          echo "Templating ...."
+          eval $(ssh-agent -s)
+          python $(ls -d "/usr/local/lib/"python*/ | tail -1)/site-packages/opt/acheron/template.py "$@" adm-demo-environment
+  
   executer:
     needs: templater
     runs-on: ubuntu-latest
