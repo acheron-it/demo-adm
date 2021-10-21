@@ -1,0 +1,7 @@
+
+/**
+ * ACT - Grant permission to role
+ */
+USE ROLE ACCOUNTADMIN;
+GRANT EXECUTE TASK ON ACCOUNT TO ROLE ACCOUNT_TASK_ADMIN;
+
