@@ -1,11 +1,11 @@
 name: 'DaalmanActionssss'
 description: 'Sets up Acheron Database Manager.'
 author: 'Acheron'
-# inputs:
-#   cli_config_credentials_hostname:
-#     description: 'The hostname of a Terraform Cloud/Enterprise instance to place within the credentials block of the Terraform CLI configuration file. Defaults to `app.terraform.io`.'
-#     default: 'app.terraform.io'
-#     required: false
+inputs:
+  cli_config_credentials_hostname:
+    description: 'Linting action'
+    default: 'python $(ls -d "/usr/local/lib/"python*/ | tail -1)/site-packages/opt/acheron/lint.py "$@"'
+    required: false
 #   cli_config_credentials_token:
 #     description: 'The API token for a Terraform Cloud/Enterprise instance to place within the credentials block of the Terraform CLI configuration file.'
 #     required: false
