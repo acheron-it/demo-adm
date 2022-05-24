@@ -2,7 +2,7 @@ name: 'DaalmanActionssss'
 description: 'Sets up Acheron Database Manager.'
 author: 'Acheron'
 inputs:
-  cli_config_credentials_hostname:
+  linter:
     description: 'Linting action'
     default: 'python $(ls -d "/usr/local/lib/"python*/ | tail -1)/site-packages/opt/acheron/lint.py "$@"'
     required: false
@@ -20,11 +20,8 @@ inputs:
 runs:
   using: 'docker'
   image: 'acheronbv/acheron-database-manager:latest-1.3.47'
-  steps:
-    - run: |
-          echo "Linting ..."
-          python $(ls -d "/usr/local/lib/"python*/ | tail -1)/site-packages/opt/acheron/lint.py "$@" 
-      shell: bash
+  args:
+    - ${{ inputs.linter }}
   # main: 'dist/index.js'
 branding:
   icon: 'terminal'
